@@ -1,0 +1,68 @@
+[gd_scene load_steps=11 format=3 uid="uid://hlfpktockh7d"]
+
+[ext_resource type="Script" path="res://scripts/controllers/player.gd" id="1_g6e3w"]
+[ext_resource type="PackedScene" uid="uid://b8qc8kfh05kct" path="res://prefabs/decals/rivet_decal.tscn" id="2_oatxl"]
+[ext_resource type="PackedScene" uid="uid://f7pkf4lpbnxg" path="res://imports/multi-tool.glb" id="2_ouxx5"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_j64vv"]
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 5.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iwj2f"]
+albedo_color = Color(1, 0.443137, 0, 0.305882)
+
+[sub_resource type="SphereMesh" id="SphereMesh_455af"]
+material = SubResource("StandardMaterial3D_iwj2f")
+radius = 0.01
+height = 0.01
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_w72v2"]
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 5.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_43em5"]
+height = 0.5
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jbucr"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_4jrrt"]
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07156, 0)
+script = ExtResource("1_g6e3w")
+decal_scene = ExtResource("2_oatxl")
+
+[node name="Neck" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.590654, 0)
+
+[node name="Camera" type="Camera3D" parent="Neck"]
+
+[node name="multi-tool" parent="Neck/Camera" instance=ExtResource("2_ouxx5")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.63859, -0.992257, -0.941203)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Neck/Camera/multi-tool"]
+transform = Transform3D(1, 0, -1.42109e-14, 0, 1, 0, 1.42109e-14, 0, 1, 0.6, 0.8, -4.17233e-07)
+emitting = false
+amount = 16
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_j64vv")
+draw_pass_1 = SubResource("SphereMesh_455af")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="Neck/Camera/multi-tool"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.7, -2.38419e-07)
+process_material = SubResource("ParticleProcessMaterial_w72v2")
+draw_pass_1 = SubResource("SphereMesh_43em5")
+
+[node name="RayCast3D" type="RayCast3D" parent="Neck/Camera"]
+transform = Transform3D(1.14641e-15, 2.62268e-08, 0.6, 0.6, -2.62268e-08, 0, 2.62268e-08, 0.6, -2.62268e-08, -3.64321e-08, 0, -0.83347)
+target_position = Vector3(0, -10, 0)
+collide_with_areas = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_jbucr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_4jrrt")

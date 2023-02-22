@@ -1,0 +1,59 @@
+[gd_scene load_steps=9 format=3 uid="uid://ucljh0pd5yhh"]
+
+[ext_resource type="Script" path="res://scripts/interactables/test.gd" id="1_xxbrw"]
+[ext_resource type="Script" path="res://scripts/interactables/grapple_point.gd" id="2_7ht2q"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_e88pp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g533r"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1al1k"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4qrn1"]
+
+[sub_resource type="Animation" id="Animation_x6fe3"]
+resource_name = "move"
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatableBody")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 1, 10, 0, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i6ylm"]
+_data = {
+"move": SubResource("Animation_x6fe3")
+}
+
+[node name="Platform" type="Node3D"]
+script = ExtResource("1_xxbrw")
+
+[node name="AnimatableBody" type="AnimatableBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AnimatableBody"]
+transform = Transform3D(5, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0)
+mesh = SubResource("BoxMesh_e88pp")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AnimatableBody"]
+transform = Transform3D(5, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0)
+shape = SubResource("BoxShape3D_g533r")
+
+[node name="GrapplePoint" type="Area3D" parent="AnimatableBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+script = ExtResource("2_7ht2q")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AnimatableBody/GrapplePoint"]
+shape = SubResource("BoxShape3D_1al1k")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AnimatableBody/GrapplePoint"]
+mesh = SubResource("BoxMesh_4qrn1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+playback_process_mode = 0
+libraries = {
+"": SubResource("AnimationLibrary_i6ylm")
+}
+
+[connection signal="grapple_activated" from="AnimatableBody/GrapplePoint" to="." method="_on_grapple_point_grapple_activated"]

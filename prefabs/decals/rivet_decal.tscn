@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8qc8kfh05kct"]
+
+[ext_resource type="Texture2D" uid="uid://bm8lhjqucaob2" path="res://textures/Rivet.png" id="1_ap5le"]
+
+[node name="Decal" type="Decal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.55651e-06, -3.55085)
+top_level = true
+size = Vector3(0.1, 0.1, 0.1)
+texture_albedo = ExtResource("1_ap5le")

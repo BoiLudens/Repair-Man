@@ -1,0 +1,61 @@
+[gd_scene load_steps=10 format=3 uid="uid://dahg35gnb4vj3"]
+
+[ext_resource type="PackedScene" uid="uid://hlfpktockh7d" path="res://prefabs/player.tscn" id="1_cvxhj"]
+[ext_resource type="Texture2D" uid="uid://bt4me22y5xmlg" path="res://textures/Testing.png" id="1_yxjd1"]
+[ext_resource type="PackedScene" uid="uid://ucljh0pd5yhh" path="res://prefabs/interactables/grapple_platform.tscn" id="3_7f0kx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8ofll"]
+size = Vector3(60, 2, 60)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_26fnk"]
+albedo_texture = ExtResource("1_yxjd1")
+uv1_scale = Vector3(12, 12, 12)
+
+[sub_resource type="BoxMesh" id="BoxMesh_yo08w"]
+material = SubResource("StandardMaterial3D_26fnk")
+size = Vector3(60, 2, 60)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_lhptr"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_rv8vw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g82vd"]
+albedo_texture = ExtResource("1_yxjd1")
+
+[node name="Main" type="Node"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 24.3351, 0)
+shadow_enabled = true
+
+[node name="Wall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 2.73364, -5.54539)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+shape = SubResource("BoxShape3D_8ofll")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("BoxMesh_yo08w")
+
+[node name="Player" parent="." instance=ExtResource("1_cvxhj")]
+
+[node name="Platform" parent="." instance=ExtResource("3_7f0kx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 6.3)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_lhptr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+mesh = SubResource("PlaneMesh_rv8vw")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_g82vd")
+
+[node name="GPUParticlesAttractorBox3D" type="GPUParticlesAttractorBox3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 4, 1, -2)
+strength = 157.06
+attenuation = 0.00120229
